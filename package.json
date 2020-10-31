@@ -1,0 +1,31 @@
+{
+  "name": "vault",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "data-point": "^1.5.0",
+    "ejs": "2.4.x",
+    "envvar": "1.1.x",
+    "express": "^4.17.1",
+    "moment": "^2.29.1",
+    "plaid": "2.0.x",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sardinachanx/yhack2017.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sardinachanx/yhack2017/issues"
+  },
+  "homepage": "https://github.com/sardinachanx/yhack2017#readme"
+}

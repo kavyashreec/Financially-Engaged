@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Financially Engaged</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link rel="stylesheet" href="theme.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/autotrack/2.3.2/autotrack.js" async></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.2.6/vue.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.5.1/vue-router.min.js"></script>
+        <script src="uikit.min.js" ></script>
+        <script src="uikit-icons.min.js" ></script>
+
+        <style>.Overlay{opacity:0}.loading-indicator{-webkit-animation:rot 1.2s infinite cubic-bezier(.23,1.2,.32,1);animation:rot 1.2s infinite cubic-bezier(.23,1.2,.32,1);border-bottom:2px solid #e3e3e3;border-left:2px solid #e3e3e3;border-radius:100%;border-right:2px solid #e3e3e3;border-top:2px solid #7e7e7e;font-size:100%;font:inherit;height:45px;left:calc(50% - (45px / 2));margin:0;padding:0;position:absolute;top:40%;vertical-align:baseline;width:45px;box-sizing:border-box}@-webkit-keyframes rot{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes rot{from{-webkit-transform:rotate(0);transform:rotate(0)}to{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}
+
+
+          div.hide {
+            display:none;
+          }
+        </style>
+
+        <link rel="stylesheet" type="text/css" href="https://cdn.plaid.com/link/2.0.92/link.css">
+</head>
+
+<body class="gorgias-loaded">
+  <div id="intro">
+        <div class="uk-offcanvas-content"><div class="uk-section-primary tm-section-texture"><div uk-sticky="media: 960" class="uk-navbar-container tm-navbar-container uk-navbar-transparent uk-sticky uk-sticky-fixed" style="position: fixed; top: 0px; width: 884px;"><div class="uk-container uk-container-expand"><nav class="uk-navbar"><div class="uk-navbar-left"><a href="/" class="uk-navbar-item uk-logo router-link-exact-active uk-active">Financially Engaged
+
+        </a></div> <div class="uk-navbar-right"><ul class="uk-navbar-nav uk-visible@m"><li class=""><a href="">About</a></li> <li><a href="">Documentation</a></li> </ul> <div class="uk-navbar-item uk-visible@m"><a href="" class="uk-button uk-button-default tm-button-default uk-icon">Login</a></div></nav></div></div><div class="uk-sticky-placeholder" style="height: 80px; margin: 0px;"></div> <div uk-height-viewport="offset-top: true; offset-bottom: true" class="uk-section uk-section-small uk-flex uk-flex-middle uk-text-center" style="box-sizing: border-box; min-height: calc(100vh - 183px); height: calc(100vh - 183px);"><div class="uk-width-1-1"><div class="uk-container"><p><img src="ring.svg" style="height:100px"></p> <p class="uk-margin-medium uk-text-lead">
+                    Saving You Time<br class="uk-visible@s">
+                    So You Can Make the Best of Yours
+                </p> <div uk-grid="" class="uk-child-width-auto uk-grid-medium uk-flex-inline uk-flex-center uk-grid">
+                  <div class="uk-first-column">
+                  <a href="#"  onclick="">Get Started</a> </div> </div></div></div></div>
+
+<br><br><br><br><br>
+
+</div>
+
+
+<!--  STEPS     -->
+
+
+    <div id="steps" class="hide">
+      <div uk-sticky="media: 960" class="uk-navbar-container tm-navbar-container uk-sticky uk-sticky-fixed" style="position: fixed; top: 0px; width: 884px;"><div class="uk-container uk-container-expand"><nav class="uk-navbar"><div class="uk-navbar-left"><a href="index.html" class="uk-navbar-item uk-logo">
+      Financially Engaged
+      </a></div> <div class="uk-navbar-right"><ul class="uk-navbar-nav uk-visible@m"><li><a href="../pro">About</a></li> <li class="uk-active"><a href="../docs/">Documentation</a></li></ul> <div class="uk-navbar-item uk-visible@m"><a href="../download" class="uk-button uk-button-default tm-button-default uk-icon">Logout</a></div> <a uk-navbar-toggle-icon="" href="#offcanvas" uk-toggle="" class="uk-navbar-toggle uk-hidden@m uk-navbar-toggle-icon uk-icon"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"><rect y="9" width="20" height="2"></rect><rect y="3" width="20" height="2"></rect><rect y="15" width="20" height="2"></rect></svg></a></div></nav></div></div>
+
+  </div>
+
+
+    <!--STEPS-->
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+  <script>
+  (function($) {
+    var handler = Plaid.create({
+      apiVersion: 'v2',
+      clientName: 'Plaid Walkthrough Demo',
+      env: '<%= PLAID_ENV %>',
+      product: ['transactions'],
+      key: '<%= PLAID_PUBLIC_KEY %>',
+      onSuccess: function(public_token) {
+        window.location = 'file:///Users/sharonlin/Downloads/BeHappy/templates/main.html';
+        $.post('/get_access_token', {
+          public_token: public_token
+        }, function() {
+          $('#container').fadeOut('fast', function() {
+            $('#intro').hide();
+            $('#app, #steps').show();
+          });
+        });
+      },
+    });
+
+    $('#link-btn').on('click', function(e) {
+      handler.open();
+    });
+
+    $('#get-accounts-btn').on('click', function(e) {
+      $.get('/accounts', function(data) {
+        $('#get-accounts-data').slideUp(function() {
+          var html = '';
+          data.accounts.forEach(function(account, idx) {
+            html += '<div class="inner">';
+            html += '<strong>' + account.name +
+              ' $' + (account.balances.available != null ? account.balances.available : account.balances.current) + '</strong><br>';
+            html += account.subtype + ' ' + account.mask;
+            html += '</div>';
+          });
+
+          $(this).html(html).slideDown();
+        });
+      });
+    });
+
+    $('#get-item-btn').on('click', function(e) {
+      $.post('/item', function(data) {
+        $('#get-item-data').slideUp(function() {
+          if (data.error)
+            $(this).html('<p>' + data.error + '</p>').slideDown();
+          else {
+            var html = '<div class="inner">';
+            html += '<p>Here\'s some basic information about your Item:</p>';
+            html += '<p>Institution name:' + data.institution.name + '</p>';
+            html += '<p>Billed products: ' + data.item.billed_products.join(', ') + '</p>';
+            html += '<p>Available products: ' + data.item.available_products.join(', ') + '</p>';
+            html += '</div>';
+
+            $(this).html(html).slideDown();
+          }
+        });
+      });
+    });
+
+    $('#get-transactions-btn').on('click', function(e) {
+      $.post('/transactions', function(data) {
+        if (data.error != null) {
+          // Format the error
+          var errorHtml = '<div class="inner"><p>' +
+           '<strong>' + data.error.error_code + ':</strong> ' +
+           data.error.error_message + '</p></div>';
+
+          if (data.error.error_code === 'PRODUCT_NOT_READY') {
+            // Add additional context for `PRODUCT_NOT_READY` errors
+            errorHtml += '<div class="inner"><p>The PRODUCT_NOT_READY ' +
+             'error is returned when a request to retrieve Transaction data ' +
+             'is made before Plaid finishes the <a href="https://plaid.com/' +
+             'docs/quickstart/#transaction-data-with-webhooks">initial ' +
+             'transaction pull.</a></p></div>';
+          }
+          // Render the error
+          $('#get-transactions-data').slideUp(function() {
+            $(this).slideUp(function() {
+              $(this).html(errorHtml).slideDown();
+            });
+          });
+        } else {
+          $('#get-transactions-data').slideUp(function() {
+            var html = '';
+            data.transactions.forEach(function(txn, idx) {
+              html += '<div class="inner">';
+              html += '<strong>' + txn.name + '</strong><br>';
+              html += '$' + txn.amount;
+              html += '<br><em>' + txn.date + '</em>';
+              html += '</div>';
+            });
+
+            $(this).slideUp(function() {
+              $(this).html(html).slideDown();
+            });
+          });
+        }
+      });
+    });
+  })(jQuery);
+  </script>
+</body>
+</html>
